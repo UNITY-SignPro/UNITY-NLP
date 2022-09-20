@@ -7,5 +7,5 @@ def NLP(input_text):
     kkma = Kkma()
     pprint(kkma.pos(input_text))
 
-input_text= input("문장을 입력하시오")
+input_text= input("문장을 입력하시오:")
 NLP(input_text)
