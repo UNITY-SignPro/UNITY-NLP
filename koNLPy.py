@@ -1,10 +1,9 @@
-from cgitb import text
-from konlpy.tag import Kkma
+from konlpy.tag import Mecab
 from konlpy.utils import pprint
 
 
 def NLP(input_text):
-    kkma = Kkma()
+    kkma = Mecab()
     pprint(kkma.pos(input_text))
 
 input_text= input("문장을 입력하시오:")

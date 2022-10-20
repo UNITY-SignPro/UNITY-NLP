@@ -5,7 +5,7 @@ import konlpy
 import nltk
 
 # POS tag a sentence
-sentence = u'안녕하세요. 저는 야구를 좋아하는 학생입니다.'
+sentence= input("문장 입력하시오:")
 words = konlpy.tag.Twitter().pos(sentence)
 
 # Define a chunk grammar, or chunking rules, then chunk
@@ -17,6 +17,7 @@ AP: {<A.*>*}            # Adjective phrase
 parser = nltk.RegexpParser(grammar)
 chunks = parser.parse(words)
 print("# Print whole tree")
+
 print(chunks.pprint())
 
 print("\n# Print noun phrases only")
