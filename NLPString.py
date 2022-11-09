@@ -8,7 +8,7 @@ mecab = Mecab()
 sentence = input("문장 입력하시오:")
 words = Mecab().pos(sentence)
 
-verb_re, noun_re, js_verb, js_noun = [], [], [], []
+verb_re, noun_re, js_word, word_re, cant_word = [], [], [], [], []
 nnp = []
 
 grammar = """
@@ -21,59 +21,57 @@ VC: {<VC*.*>*}
 EC: {<EC.*>*}
 
 """
+
 parser = nltk.RegexpParser(grammar)
 for subtree in parser.parse(words).subtrees():
     if subtree.label() == 'NP':
         if list(subtree)[0][1] == 'NNP':
             nnp.append(list(subtree)[0][0])
+            word_re.append(list(subtree)[0][0])
         else:
             noun_re.append(list(subtree)[0][0])
-
-    if list(subtree)[0][0][-1]=="다":
+            word_re.append(list(subtree)[0][0])
+    if list(subtree)[0][0][-1]=="다"or list(subtree)[0][0][-1]=="요":
         if subtree.label() == 'VV':
            verb_re.append(list(subtree)[0][0])
+           word_re.append(list(subtree)[0][0])
         if subtree.label() == 'AP':
             verb_re.append(list(subtree)[0][0])
+            word_re.append(list(subtree)[0][0])
         if subtree.label() == 'VX':
             verb_re.append(list(subtree)[0][0])
+            word_re.append(list(subtree)[0][0])
     else:
         if subtree.label() == 'VV':
            verb_re.append(list(subtree)[0][0]+"다")
+           word_re.append(list(subtree)[0][0] + "다")
         if subtree.label() == 'AP':
             verb_re.append(list(subtree)[0][0]+"다")
+            word_re.append(list(subtree)[0][0] + "다")
         if subtree.label() == 'VX':
             verb_re.append(list(subtree)[0][0]+"다")
+            word_re.append(list(subtree)[0][0] + "다")
     if subtree.label() == 'MP':
         noun_re.append(list(subtree)[0][0])
+        word_re.append(list(subtree)[0][0])
 
 print(nnp)
 print(noun_re)
 print(verb_re)
 
 
-for i in verb_re:
+for i in word_re:
     try:
-        js_verb.append(search_word(i)[1])
+        js_word.append(search_word(i)[1])
     except:
-        try:
-            js_verb.append(search_word(i)[1])
-        except:
-            print(i + "없는단어입니다")
-    # js_verb.append(search_word(i)[1])
-for i in noun_re:
-    try:
-        js_noun.append(search_word(i)[1])
-    except:
-        try:
-            js_verb.append(search_word(i)[1])
-        except:
-            print(i + "없는단어입니다")
+        cant_word.append(i)
+
 json_object = \
     {
         "for_backend": {
             "nnp": nnp,
-            "noun": js_noun,
-            "verb": js_verb
+            "word": js_word,
+            "cant": cant_word
         },
         "for_front": {
             "nnp": nnp,
