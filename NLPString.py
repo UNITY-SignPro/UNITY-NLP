@@ -1,9 +1,7 @@
 from eunjeon import Mecab
 import nltk
 import json
-# from WordManage import search_word
-def search_word(word):
-    return c.execute(f"SELECT * FROM word WHERE origin = '{word}'").fetchone()
+from WordManage import search_word
 # import mecab
 mecab = Mecab()
 # POS tag a sentence
